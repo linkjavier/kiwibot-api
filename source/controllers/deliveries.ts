@@ -24,9 +24,18 @@ interface Delivery {
 const getDeliveries = async (req: Request, res: Response, next: NextFunction) => {
     // get some Deliveries
     let deliveries = await deliveriesRepository.getAll()
-    return res.status(200).json({
-        message: deliveries.map(delivery => delivery.toMap())
-    });
+
+    if (deliveries != undefined) {
+        return res.status(200).json({
+            // message: deliveries.map(delivery => delivery.toMap())
+            message: deliveries.map(delivery => delivery?.toMap())
+        });
+    }
+    else {
+        return res.status(400).json({
+            message: "Error on getting deliveries"
+        })
+    }
 };
 
 // Getting a single delivery
@@ -35,9 +44,18 @@ const getDelivery = async (req: Request, res: Response, next: NextFunction) => {
     let id: string = req.params.id;
     // get the delivery
     let delivery = await deliveriesRepository.getDeliveryWithId(id)
-    return res.status(200).json({
-        message: delivery.toMap()
-    });
+
+    if (delivery != undefined){
+        return res.status(200).json({
+            message: delivery.toMap()
+        });
+    }
+    else {
+        return res.status(400).json({
+            message: "Error on getting delivery"
+        })
+    }
+
 };
 
 // Adding a Delivery
@@ -45,9 +63,18 @@ const addDelivery = async (req: Request, res: Response, next: NextFunction) => {
     // add the delivery
     let newDelivery = await deliveriesRepository.createDelivery(req.body)
     // return response
-    return res.status(200).json({
-        message: newDelivery.toMap()
-    });
+
+    if (newDelivery != undefined) {
+        return res.status(200).json({
+            message: newDelivery.toMap()
+        });
+    }
+    else {
+        return res.status(400).json({
+            message: "Error on Delivery Creation"
+        })
+    }
+
 };
 
 export default { getDeliveries, getDelivery, addDelivery };

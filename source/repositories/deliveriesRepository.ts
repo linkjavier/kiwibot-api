@@ -6,22 +6,38 @@ import {  collection, query, doc, setDoc, getDoc, getDocs } from "@firebase/fire
 
 export const COLLECTION_DELIVERIES : string = 'deliveries'
 
+interface json { 
+	id: string
+	creation_date: Date
+	state: "pending" | "assigned" | "in_transit" | "delivered"
+	pickup: {
+		pickup_lat: number
+		pickup_lon: number
+	}
+
+	dropoff: {
+		dropoff_lat: number
+		dropoff_lon: number
+	}
+	zone_id: string
+}
+
 class DeliveriesRepository {
-    async createDelivery(json) {
+    async createDelivery(json: json) {
         if(!json){
             const error = new Error("Missing Json")
-            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+            // error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
             throw(error)
         }
         let id = json['id']
         const docRef = id === undefined ? doc(collection(firestore, "deliveries")) : doc(firestore, "deliveries", id)
-        let entity: DeliveryEntity = {}
+        let entity = <DeliveryEntity>{};
 
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             const error = new Error("Document already exist")
-            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+            // error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
             throw(error)
         }
         else {
@@ -42,7 +58,7 @@ class DeliveriesRepository {
         }
     }
 
-    async getDeliveryWithId(deliveryId) {
+    async getDeliveryWithId(deliveryId: string) {
         if(deliveryId === undefined || deliveryId === null || deliveryId === '') return null
 
         const docRef = doc(firestore, "deliveries", deliveryId)
@@ -55,7 +71,7 @@ class DeliveriesRepository {
         }
         else {
             const error = new Error("Order does not exist")
-            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+            // error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
             throw(error)
         }
     }
