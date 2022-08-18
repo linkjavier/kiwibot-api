@@ -26,3 +26,33 @@ In its first version it will have REST API with Endpoints for Deliveries and Bot
 - GET ALL DELIVERIES ==>  http://localhost:6060/deliveries
 - GET A DELIVERY ==>  http://localhost:6060/deliveries/id
 - POST ==> http://localhost:6060/deliveries
+
+
+For POST: (Send Data with this structure)
+== Delivery ==
+{ 
+	id: string
+	creation_date: Date
+	state: "pending" | "assigned" | "in_transit" | "delivered"
+	pickup: {
+		pickup_lat: number
+		pickup_lon: number
+	}
+
+	dropoff: {
+		dropoff_lat: number
+		dropoff_lon: number
+	}
+	zone_id: string
+}
+
+== For Bots ==
+{ 
+	id: string
+	status: "available" | "busy" | "reserved"
+	location: {
+		dropoff_lat: number
+		dropoff_lon: number
+	}
+	zone_id: string
+}
