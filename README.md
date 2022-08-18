@@ -30,6 +30,7 @@ In its first version it will have REST API with Endpoints for Deliveries and Bot
 
 For POST: (Send Data with this structure)
 == Delivery ==
+```
 { 
 	id: string
 	creation_date: Date
@@ -45,8 +46,10 @@ For POST: (Send Data with this structure)
 	}
 	zone_id: string
 }
-
+```
 == For Bots ==
+
+```
 { 
 	id: string
 	status: "available" | "busy" | "reserved"
@@ -56,3 +59,4 @@ For POST: (Send Data with this structure)
 	}
 	zone_id: string
 }
+```
