@@ -6,22 +6,6 @@ import {  collection, query, doc, setDoc, getDoc, getDocs } from "@firebase/fire
 
 export const COLLECTION_DELIVERIES : string = 'deliveries'
 
-interface json { 
-	id: string
-	creation_date: Date
-	state: "pending" | "assigned" | "in_transit" | "delivered"
-	pickup: {
-		pickup_lat: number
-		pickup_lon: number
-	}
-
-	dropoff: {
-		dropoff_lat: number
-		dropoff_lon: number
-	}
-	zone_id: string
-}
-
 class DeliveriesRepository {
     async createDelivery(json: any) {
         if(!json){
