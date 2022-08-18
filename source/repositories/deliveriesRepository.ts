@@ -23,10 +23,10 @@ interface json {
 }
 
 class DeliveriesRepository {
-    async createDelivery(json: json) {
+    async createDelivery(json: any) {
         if(!json){
-            const error = new Error("Missing Json")
-            // error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+            const error: any = new Error("Missing Json")
+            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
             throw(error)
         }
         let id = json['id']
@@ -36,8 +36,8 @@ class DeliveriesRepository {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            const error = new Error("Document already exist")
-            // error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+            const error: any = new Error("Document already exist")
+            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
             throw(error)
         }
         else {
@@ -64,16 +64,14 @@ class DeliveriesRepository {
         const docRef = doc(firestore, "deliveries", deliveryId)
         const documentSnapshot = await getDoc(docRef);
 
-        if (documentSnapshot.exists()) {
-            const answer = new DeliveryEntity(documentSnapshot.data());
-    
-            return answer
-        }
-        else {
-            const error = new Error("Order does not exist")
-            // error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+        if (!documentSnapshot.exists()) {
+            const error: any = new Error("Order does not exist")
+            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
             throw(error)
         }
+
+        const answer = DeliveryEntity.fromSnapshot(documentSnapshot);
+        return answer
     }
 
     async getAll() {
@@ -81,9 +79,17 @@ class DeliveriesRepository {
         const collectionRef = collection(firestore, "deliveries")
         const q = query(collectionRef);
         const querySnapshot = await getDocs(q)
-        const AllOrders = querySnapshot.docs.map(doc => DeliveryEntity.fromSnapshot(doc))
-        
-        return  AllOrders     
+
+        if (!querySnapshot.empty) {
+            const AllOrders = querySnapshot.docs.map(doc => DeliveryEntity.fromSnapshot(doc))
+            return  AllOrders   
+        }
+        else {
+            const error: any = new Error("No Deliveries")
+            error.code = constants.HTTP_ANSWER_CODES_400_BAD_REQUEST
+            throw(error)
+        }        
+          
     }
 }
 

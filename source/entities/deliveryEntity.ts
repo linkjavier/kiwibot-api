@@ -1,7 +1,7 @@
 import 'firebase/app'
 import * as constants from '../constants'
 
-interface Delivery { 
+interface Delivery {
 	id: string
 	creation_date: Date
 	state: "pending" | "assigned" | "in_transit" | "delivered"
@@ -54,13 +54,19 @@ class DeliveryEntity implements Delivery {
         this.zone_id = zone_id
     }
 
-    static fromData(id, state, pickup, dropoff, zone_id) {
+    static fromData(id: string, state: "pending" | "assigned" | "in_transit" | "delivered", pickup: {
+        pickup_lat: number;
+        pickup_lon: number;
+    }, dropoff: {
+        dropoff_lat: number;
+        dropoff_lon: number;
+    }, zone_id: string) {
         const creation_date = new Date()
         return new DeliveryEntity
-            (null, creation_date, state, pickup, dropoff, zone_id)
+            ('', creation_date, state, pickup, dropoff, zone_id)
     }
 
-    static fromSnapshot(snapshot) { //firebase.firestore.DocumentSnapshot
+    static fromSnapshot(snapshot: any) { //firebase.firestore.DocumentSnapshot
         if (snapshot === null || snapshot === undefined) return
         return new DeliveryEntity
             (
@@ -73,7 +79,7 @@ class DeliveryEntity implements Delivery {
             )
     }
 
-    static fromJson(json) {
+    static fromJson(json: any) {
         return new DeliveryEntity(
             json[constants.COLLECTION_DELIVERIES_FIELD_ID],
             json[constants.COLLECTION_DELIVERIES_FIELD_CREATION_DATE],
