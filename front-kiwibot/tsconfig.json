@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "useDefineForClassFields": true, // Mobx. Without this, class fields cannot be made observable before they are initialized.
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

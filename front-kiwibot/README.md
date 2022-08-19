@@ -2,9 +2,10 @@
 
 In this application, I am going to use the following Node.js libraries.
 
+- TypeScript: A TypeScript compiler with static set type definitions.
 - Tailwind:
 - Mobx: 
-- Axios: 
+- Axios: A Node.js promise-based HTTP client library for Node.js, for sending HTTP requests to query and consume resources from APIs.
 
 == To start the proyect: ==
 
